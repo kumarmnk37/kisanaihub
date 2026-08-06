@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#1a5c2a">
+<meta name="description" content="Kisan AI Hub - हर किसान का डिजिटल साथी। AI से पाएं खेती की सलाह, सरकारी योजनाएं, मौसम जानकारी।">
+<title>🌾 Kisan AI Hub</title>
+<link rel="manifest" href="#" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700;900&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --green-dark: #1a5c2a;
+    --green-mid: #2d7a42;
+    --green-light: #4caf6e;
+    --green-pale: #e8f5ec;
+    --gold: #e8a620;
+    --gold-light: #fdf3dc;
+    --earth: #6b4c1e;
+    --white: #ffffff;
+    --gray-soft: #f4f7f5;
+    --text-main: #1c2b1f;
+    --text-muted: #5a7060;
+    --shadow: 0 4px 20px rgba(26,92,42,0.12);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Noto Sans Devanagari', 'Inter', sans-serif;
+    background: var(--gray-soft);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 60%, #3a8f55 100%);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.25);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-icon {
+    font-size: 28px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    animation: sway 3s ease-in-out infinite;
+  }
+  @keyframes sway {
+    0%,100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+  }
+  .logo-text {
+    color: white;
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: -0.3px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .logo-sub {
+    color: rgba(255,255,255,0.75);
+    font-size: 10px;
+    font-weight: 400;
+    display: block;
+    letter-spacing: 0.5px;
+  }
+  .header-badge {
+    background: var(--gold);
+    color: var(--earth);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(160deg, var(--green-dark) 0%, var(--green-mid) 55%, var(--green-light) 100%);
+    padding: 32px 20px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    bottom: -30px; left: 0; right: 0;
+    height: 60px;
+    background: var(--gray-soft);
+    border-radius: 50% 50% 0 0 / 30px 30px 0 0;
+  }
+  .hero-emoji {
+    font-size: 52px;
+    display: block;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
+  }
+  .hero h1 {
+    color: white;
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 1.25;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero p {
+    color: rgba(255,255,255,0.85);
+    font-size: 13.5px;
+    line-height: 1.6;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 24px 16px 100px;
+  }
+
+  /* ── CHAT BOX ── */
+  .chat-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .chat-header {
+    background: linear-gradient(90deg, var(--green-dark), var(--green-mid));
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .chat-header-icon {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .chat-header-text { color: white; }
+  .chat-header-text strong { font-size: 14px; display: block; }
+  .chat-header-text small { font-size: 11px; opacity: 0.8; }
+  .online-dot {
+    width: 8px; height: 8px;
+    background: #4ade80;
+    border-radius: 50%;
+    margin-left: auto;
+    box-shadow: 0 0 0 2px rgba(74,222,128,0.3);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 0 2px rgba(74,222,128,0.3); }
+    50% { box-shadow: 0 0 0 5px rgba(74,222,128,0.1); }
+  }
+
+  /* chat messages */
+  .chat-messages {
+    padding: 18px 14px;
+    min-height: 220px;
+    max-height: 420px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: #f7fdf9;
+    scroll-behavior: smooth;
+  }
+  .msg {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    animation: fadeUp 0.3s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(8px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .msg.bot { flex-direction: row; }
+  .msg.user { flex-direction: row-reverse; }
+  .msg-avatar {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  .msg.bot .msg-avatar { background: linear-gradient(135deg, #e8f5ec, #d0eeda); }
+  .msg.user .msg-avatar { background: linear-gradient(135deg, #fff8e1, #fdedb0); }
+  .msg-bubble {
+    max-width: 82%;
+    padding: 12px 16px;
+    border-radius: 20px;
+    font-size: 14.5px;
+    line-height: 1.75;
+    white-space: pre-line;
+  }
+  .msg.bot .msg-bubble {
+    background: white;
+    color: var(--text-main);
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+    border: 1.5px solid #e0ede4;
+    font-size: 14.5px;
+  }
+  .msg.user .msg-bubble {
+    background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+    color: white;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 3px 10px rgba(26,92,42,0.3);
+    font-size: 14px;
+  }
+  .typing-indicator {
+    display: flex; gap: 5px; align-items: center; padding: 12px 16px;
+  }
+  .typing-dot {
+    width: 8px; height: 8px;
+    background: var(--green-light);
+    border-radius: 50%;
+    animation: bounce 1.2s infinite;
+  }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce {
+    0%,80%,100% { transform: translateY(0); }
+    40% { transform: translateY(-8px); }
+  }
+  .hidden { display: none !important; }
+
+  /* chat input */
+  .chat-input-row {
+    display: flex;
+    gap: 0;
+    border-top: 1px solid #e8f0ea;
+    background: white;
+  }
+  .chat-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    color: var(--text-main);
+    background: transparent;
+    resize: none;
+    min-height: 52px;
+    max-height: 120px;
+  }
+  .chat-input::placeholder { color: #a0b8a8; }
+  .send-btn {
+    width: 52px;
+    background: var(--green-mid);
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    color: white;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .send-btn:hover { background: var(--green-dark); }
+  .send-btn:active { transform: scale(0.95); }
+
+  /* ── QUICK QUESTIONS ── */
+  .quick-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    padding: 0 2px;
+  }
+  .quick-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+  .chip {
+    background: white;
+    border: 1.5px solid var(--green-light);
+    color: var(--green-dark);
+    padding: 7px 13px;
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 600;
+  }
+  .chip:hover, .chip:active {
+    background: var(--green-pale);
+    border-color: var(--green-dark);
+  }
+
+  /* ── FEATURE CARDS ── */
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--green-light), transparent);
+    border-radius: 2px;
+  }
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+  .feature-card {
+    background: white;
+    border-radius: var(--radius-sm);
+    padding: 16px 14px;
+    box-shadow: 0 2px 12px rgba(26,92,42,0.08);
+    cursor: pointer;
+    transition: all 0.22s;
+    border: 1.5px solid transparent;
+    text-align: center;
+  }
+  .feature-card:hover, .feature-card:active {
+    border-color: var(--green-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+  .feature-card .fc-icon {
+    font-size: 28px;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .feature-card .fc-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 4px;
+  }
+  .feature-card .fc-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* ── YOJANA CARDS ── */
+  .yojana-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
+  .yojana-card {
+    background: white;
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    display: flex; align-items: center; gap: 14px;
+    box-shadow: 0 2px 10px rgba(26,92,42,0.07);
+    cursor: pointer;
+    transition: all 0.2s;
+    border-left: 4px solid var(--green-light);
+  }
+  .yojana-card:hover { border-left-color: var(--green-dark); box-shadow: var(--shadow); }
+  .yojana-icon { font-size: 26px; flex-shrink: 0; }
+  .yojana-info { flex: 1; }
+  .yojana-name { font-size: 13.5px; font-weight: 700; color: var(--text-main); }
+  .yojana-desc { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+  .yojana-arrow { color: var(--green-light); font-size: 18px; }
+
+  /* ── TIPS ── */
+  .tip-card {
+    background: linear-gradient(135deg, var(--gold-light), #fff9e6);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    border: 1.5px solid var(--gold);
+    margin-bottom: 22px;
+  }
+  .tip-title { font-size: 13px; font-weight: 700; color: var(--earth); margin-bottom: 8px; }
+  .tip-text { font-size: 12.5px; color: #5a4010; line-height: 1.7; }
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: white;
+    border-top: 1px solid #e2ece5;
+    display: flex;
+    max-width: 480px;
+    margin: 0 auto;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+    z-index: 99;
+  }
+  .nav-item {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 10px 4px 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    gap: 3px;
+  }
+  .nav-item.active .nav-icon { color: var(--green-dark); }
+  .nav-item.active .nav-label { color: var(--green-dark); font-weight: 700; }
+  .nav-icon { font-size: 20px; color: #a0b8a8; transition: all 0.2s; }
+  .nav-label { font-size: 10px; color: #a0b8a8; transition: all 0.2s; font-weight: 500; }
+  .nav-item:active { transform: scale(0.93); }
+
+  /* ── SECTION PAGES ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── LIKE & SHARE ── */
+  .like-share-bar {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 10px;
+  }
+  .like-section { display: flex; align-items: center; gap: 10px; }
+  .like-btn {
+    background: none;
+    border: 2px solid #e0e0e0;
+    border-radius: 30px;
+    padding: 9px 18px;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 7px;
+    transition: all 0.2s;
+    font-family: 'Noto Sans Devanagari', sans-serif;
+  }
+  .like-btn.liked {
+    border-color: #e53935;
+    background: #fff0f0;
+    animation: heartPop 0.3s ease;
+  }
+  @keyframes heartPop {
+    0%  { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100%{ transform: scale(1); }
+  }
+  .like-count { font-size: 13px; font-weight: 700; color: var(--text-main); }
+  .share-btns { display: flex; gap: 8px; }
+  .share-btn {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s;
+  }
+  .share-btn:active { transform: scale(0.9); }
+  .share-wa   { background: #25d366; }
+  .share-copy { background: var(--green-pale); }
+  .copy-toast {
+    position: fixed;
+    bottom: 80px; left: 50%; transform: translateX(-50%);
+    background: #1c2b1f;
+    color: white;
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 999;
+    pointer-events: none;
+  }
+  .copy-toast.show { opacity: 1; }
+
+  /* ── BLOG CARDS ── */
+  .blog-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 22px; }
+  .blog-card {
+    background: white;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(26,92,42,0.08);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: block;
+    color: inherit;
+  }
+  .blog-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+  .blog-card-body { padding: 14px 16px; }
+  .blog-tag {
+    display: inline-block;
+    background: var(--green-pale);
+    color: var(--green-dark);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 10px;
+    margin-bottom: 7px;
+    letter-spacing: 0.3px;
+  }
+  .blog-title { font-size: 13.5px; font-weight: 700; color: var(--text-main); line-height: 1.5; margin-bottom: 5px; }
+  .blog-date { font-size: 11px; color: var(--text-muted); }
+  .blog-more-btn {
+    display: block;
+    width: 100%;
+    background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    margin-bottom: 22px;
+    transition: opacity 0.2s;
+  }
+  .blog-more-btn:hover { opacity: 0.9; }
+
+  /* scrollbar */
+  .chat-messages::-webkit-scrollbar { width: 4px; }
+  .chat-messages::-webkit-scrollbar-thumb { background: var(--green-pale); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="logo-row">
+      <span class="logo-icon">🌾</span>
+      <div>
+        <span class="logo-text">Kisan AI Hub</span>
+        <span class="logo-sub">हर किसान का डिजिटल साथी</span>
+      </div>
+    </div>
+    <span class="header-badge">🤖 AI LIVE</span>
+  </div>
+</div>
+
+<!-- MAIN WRAPPER -->
+<div style="max-width:480px; margin:0 auto;">
+
+<!-- PAGE: HOME -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <span class="hero-emoji">🧑‍🌾</span>
+    <h1>AI से पाएं <span>खेती की</span><br>सटीक सलाह</h1>
+    <p>कोई भी सवाल पूछें — फसल, मौसम, बीज, मंडी भाव या सरकारी योजना</p>
+  </div>
+
+  <div class="main">
+    <!-- CHAT CARD -->
+    <div class="chat-card">
+      <div class="chat-header">
+        <div class="chat-header-icon">🤖</div>
+        <div class="chat-header-text">
+          <strong>Kisan AI सहायक</strong>
+          <small>AI से तुरंत जवाब पाएं</small>
+        </div>
+        <div class="online-dot"></div>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg bot">
+          <div class="msg-avatar">🤖</div>
+          <div class="msg-bubble">
+            नमस्ते किसान भाई! 🙏<br>मैं आपका AI सहायक हूँ। खेती से जुड़ा कोई भी सवाल पूछें — मैं हिंदी में तुरंत जवाब दूँगा।
+          </div>
+        </div>
+      </div>
+
+      <div id="typingIndicator" class="typing-indicator hidden">
+        <div class="msg-avatar">🤖</div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+
+      <div class="chat-input-row">
+        <textarea
+          class="chat-input"
+          id="userInput"
+          placeholder="अपना सवाल यहाँ लिखें..."
+          rows="1"
+        ></textarea>
+        <button class="send-btn" id="sendBtn" title="भेजें">➤</button>
+      </div>
+    </div>
+
+    <!-- QUICK CHIPS -->
+    <p class="quick-label">⚡ जल्दी पूछें</p>
+    <div class="quick-chips">
+      <span class="chip" onclick="askQuick('धान की फसल में पीलापन क्यों आता है?')">🌾 धान में पीलापन</span>
+      <span class="chip" onclick="askQuick('PM Kisan की अगली किस्त कब आएगी?')">💰 PM Kisan किस्त</span>
+      <span class="chip" onclick="askQuick('गेहूं की बुवाई का सही समय क्या है?')">🌿 गेहूं बुवाई</span>
+      <span class="chip" onclick="askQuick('यूरिया खाद कब और कितनी डालें?')">🧪 यूरिया खाद</span>
+      <span class="chip" onclick="askQuick('सोयाबीन में कौन सा कीट लगता है?')">🐛 सोयाबीन कीट</span>
+      <span class="chip" onclick="askQuick('फसल बीमा कैसे कराएं?')">🛡️ फसल बीमा</span>
+    </div>
+
+    <!-- LIKE & SHARE BAR -->
+    <div class="like-share-bar">
+      <div class="like-section">
+        <button class="like-btn" id="likeBtn" onclick="toggleLike()">
+          <span id="likeIcon">🤍</span>
+          <span id="likeText" style="font-size:13px;font-weight:700;color:#e53935;">Like</span>
+        </button>
+        <span class="like-count"><span id="likeCount">247</span> Likes</span>
+      </div>
+      <div class="share-btns">
+        <button class="share-btn share-wa" onclick="shareWhatsApp()" title="WhatsApp पर Share करें">🟢</button>
+        <button class="share-btn share-copy" onclick="copyLink()" title="Link Copy करें">🔗</button>
+      </div>
+    </div>
+    <div class="copy-toast" id="copyToast">✅ Link Copy हो गई!</div>
+
+    <!-- FEATURES -->
+    <p class="section-title">🌟 हमारी सेवाएं</p>
+    <div class="cards-grid">
+      <div class="feature-card" onclick="switchNav('yojana')">
+        <span class="fc-icon">📋</span>
+        <div class="fc-title">सरकारी योजनाएं</div>
+        <div class="fc-desc">PM Kisan, KCC और अन्य</div>
+      </div>
+      <div class="feature-card" onclick="askQuick('आज मेरे जिले का मौसम कैसा रहेगा और खेती पर क्या असर पड़ेगा?')">
+        <span class="fc-icon">🌤️</span>
+        <div class="fc-title">मौसम सलाह</div>
+        <div class="fc-desc">खेती के लिए मौसम जानकारी</div>
+      </div>
+      <div class="feature-card" onclick="askQuick('आज गेहूं, धान और सोयाबीन का मंडी भाव क्या है?')">
+        <span class="fc-icon">📊</span>
+        <div class="fc-title">मंडी भाव</div>
+        <div class="fc-desc">ताज़ा फसल के दाम देखें</div>
+      </div>
+      <div class="feature-card" onclick="switchNav('tips')">
+        <span class="fc-icon">💡</span>
+        <div class="fc-title">खेती टिप्स</div>
+        <div class="fc-desc">आधुनिक खेती के तरीके</div>
+      </div>
+    </div>
+
+    <!-- TIP OF DAY -->
+    <div class="tip-card">
+      <div class="tip-title">🌟 आज का खेती टिप</div>
+      <div class="tip-text" id="dailyTip">लोड हो रहा है...</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: YOJANA -->
+<div id="page-yojana" class="page">
+  <div class="main" style="padding-top:20px;">
+    <p class="section-title">📋 सरकारी योजनाएं</p>
+    <div class="yojana-list">
+      <div class="yojana-card" onclick="askQuick('PM Kisan Samman Nidhi योजना क्या है, कैसे रजिस्टर करें और कितना पैसा मिलता है?')">
+        <span class="yojana-icon">🌾</span>
+        <div class="yojana-info">
+          <div class="yojana-name">PM किसान सम्मान निधि</div>
+          <div class="yojana-desc">₹6000 सालाना सहायता</div>
+        </div>
+        <span class="yojana-arrow">›</span>
+      </div>
+      <div class="yojana-card" onclick="askQuick('PM Kusum योजना क्या है, सोलर पंप कैसे मिलेगा और कितनी सब्सिडी मिलती है?')">
+        <span class="yojana-icon">☀️</span>
+        <div class="yojana-info">
+          <div class="yojana-name">PM कुसुम योजना</div>
+          <div class="yojana-desc">सोलर पंप पर 90% सब्सिडी</div>
+        </div>
+        <span class="yojana-arrow">›</span>
+      </div>
+      <div class="yojana-card" onclick="askQuick('किसान क्रेडिट कार्ड KCC क्या है, कैसे बनवाएं और कितना लोन मिलता है?')">
+        <span class="yojana-icon">💳</span>
+        <div class="yojana-info">
+          <div class="yojana-name">किसान क्रेडिट कार्ड (KCC)</div>
+          <div class="yojana-desc">3 लाख तक आसान लोन</div>
+        </div>
+        <span class="yojana-arrow">›</span>
+      </div>
+      <div class="yojana-card" onclick="askQuick('PM Fasal Bima Yojana फसल बीमा कैसे कराएं और क्लेम कैसे मिलता है?')">
+        <span class="yojana-icon">🛡️</span>
+        <div class="yojana-info">
+          <div class="yojana-name">PM फसल बीमा योजना</div>
+          <div class="yojana-desc">फसल नुकसान पर मुआवजा</div>
+        </div>
+        <span class="yojana-arrow">›</span>
+      </div>
+      <div class="yojana-card" onclick="askQuick('e-NAM ऑनलाइन मंडी क्या है, किसान कैसे अपनी फसल बेच सकते हैं?')">
+        <span class="yojana-icon">🏪</span>
+        <div class="yojana-info">
+          <div class="yojana-name">e-NAM ऑनलाइन मंडी</div>
+          <div class="yojana-desc">घर से फसल बेचें ऑनलाइन</div>
+        </div>
+        <span class="yojana-arrow">›</span>
+      </div>
+      <div class="yojana-card" onclick="askQuick('Soil Health Card मृदा स्वास्थ्य कार्ड क्या है और कैसे बनवाएं?')">
+        <span class="yojana-icon">🧪</span>
+        <div class="yojana-info">
+          <div class="yojana-name">मृदा स्वास्थ्य कार्ड</div>
+          <div class="yojana-desc">मिट्टी जांच और रिपोर्ट</div>
+        </div>
+        <span class="yojana-arrow">›</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: TIPS -->
+<div id="page-tips" class="page">
+  <div class="main" style="padding-top:20px;">
+    <p class="section-title">💡 खेती टिप्स</p>
+    <div class="cards-grid">
+      <div class="feature-card" onclick="askQuick('जैविक खेती कैसे शुरू करें, क्या फायदे हैं और कहाँ बेचें?')">
+        <span class="fc-icon">🌱</span>
+        <div class="fc-title">जैविक खेती</div>
+        <div class="fc-desc">केमिकल-मुक्त फसल उगाएं</div>
+      </div>
+      <div class="feature-card" onclick="askQuick('ड्रिप सिंचाई क्या है, कैसे लगाएं और इससे पानी कितना बचता है?')">
+        <span class="fc-icon">💧</span>
+        <div class="fc-title">ड्रिप सिंचाई</div>
+        <div class="fc-desc">70% पानी बचाएं</div>
+      </div>
+      <div class="feature-card" onclick="askQuick('वर्मीकम्पोस्ट खाद घर पर कैसे बनाएं, पूरी विधि बताएं?')">
+        <span class="fc-icon">🪱</span>
+        <div class="fc-title">वर्मीकम्पोस्ट</div>
+        <div class="fc-desc">घर पर खाद बनाएं</div>
+      </div>
+      <div class="feature-card" onclick="askQuick('मल्चिंग क्या है खेती में इसका उपयोग कैसे करें?')">
+        <span class="fc-icon">🍂</span>
+        <div class="fc-title">मल्चिंग तकनीक</div>
+        <div class="fc-desc">खरपतवार और नमी नियंत्रण</div>
+      </div>
+      <div class="feature-card" onclick="askQuick('हाइड्रोपोनिक खेती क्या है, बिना मिट्टी के कैसे उगाएं?')">
+        <span class="fc-icon">🏭</span>
+        <div class="fc-title">हाइड्रोपोनिक</div>
+        <div class="fc-desc">बिना मिट्टी के खेती</div>
+      </div>
+      <div class="feature-card" onclick="askQuick('मशरूम की खेती घर पर कैसे करें, पूरी जानकारी दें?')">
+        <span class="fc-icon">🍄</span>
+        <div class="fc-title">मशरूम खेती</div>
+        <div class="fc-desc">कम जगह में ज़्यादा कमाई</div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-title">🤖 AI से और टिप्स पाएं</div>
+      <div class="tip-text">नीचे होम पर जाकर AI सहायक से कोई भी खेती सवाल पूछें — जैसे कीट नियंत्रण, बीज चयन, सिंचाई का समय, या फसल चक्र।</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: BLOG -->
+<div id="page-blog" class="page">
+  <div class="main" style="padding-top:20px;">
+    <p class="section-title">📰 ताज़ा Blog Posts</p>
+    <div class="blog-list">
+
+      <a class="blog-card" href="https://kisansevahindi.blogspot.com/2026/08/munger-ayushman-bharat-2026.html" target="_blank">
+        <div class="blog-card-body">
+          <span class="blog-tag">🏥 स्वास्थ्य योजना</span>
+          <div class="blog-title">मुंगेर में आयुष्मान भारत योजना — पूरी जानकारी 2026</div>
+          <div class="blog-date">📅 4 अगस्त 2026</div>
+        </div>
+      </a>
+
+      <a class="blog-card" href="https://kisansevahindi.blogspot.com/2026/08/munger-nabard-loan-2026.html" target="_blank">
+        <div class="blog-card-body">
+          <span class="blog-tag">💳 किसान लोन</span>
+          <div class="blog-title">मुंगेर में नाबार्ड लोन कैसे मिलेगा? पूरी जानकारी 2026</div>
+          <div class="blog-date">📅 3 अगस्त 2026</div>
+        </div>
+      </a>
+
+      <a class="blog-card" href="https://kisansevahindi.blogspot.com/2026/08/munger-solar-pump-yojana-2026.html" target="_blank">
+        <div class="blog-card-body">
+          <span class="blog-tag">☀️ सोलर पंप</span>
+          <div class="blog-title">मुंगेर में सोलर पंप योजना — पूरी जानकारी 2026</div>
+          <div class="blog-date">📅 2 अगस्त 2026</div>
+        </div>
+      </a>
+
+      <a class="blog-card" href="https://kisansevahindi.blogspot.com/2026/08/munger-manrega-yojana-2026.html" target="_blank">
+        <div class="blog-card-body">
+          <span class="blog-tag">🏗️ मनरेगा</span>
+          <div class="blog-title">मुंगेर के किसानों के लिए मनरेगा योजना 2026</div>
+          <div class="blog-date">📅 1 अगस्त 2026</div>
+        </div>
+      </a>
+
+      <a class="blog-card" href="https://kisansevahindi.blogspot.com/2026/07/2026.html" target="_blank">
+        <div class="blog-card-body">
+          <span class="blog-tag">🌾 खेती</span>
+          <div class="blog-title">मुंगेर में धान की खेती कैसे करें? पूरी जानकारी 2026</div>
+          <div class="blog-date">📅 1 अगस्त 2026</div>
+        </div>
+      </a>
+
+      <a class="blog-card" href="https://kisansevahindi.blogspot.com/2026/07/blog-post.html" target="_blank">
+        <div class="blog-card-body">
+          <span class="blog-tag">🛡️ फसल बीमा</span>
+          <div class="blog-title">फसल बीमा योजना क्या है और कैसे मिलती है?</div>
+          <div class="blog-date">📅 31 जुलाई 2026</div>
+        </div>
+      </a>
+
+      <a class="blog-card" href="https://kisansevahindi.blogspot.com/2026/07/pm-kisan.html" target="_blank">
+        <div class="blog-card-body">
+          <span class="blog-tag">💰 PM Kisan</span>
+          <div class="blog-title">PM Kisan योजना क्या है और कैसे मिलती है?</div>
+          <div class="blog-date">📅 31 जुलाई 2026</div>
+        </div>
+      </a>
+
+    </div>
+
+    <a class="blog-more-btn" href="https://kisansevahindi.blogspot.com" target="_blank">
+      📖 सभी Articles पढ़ें →
+    </a>
+
+    <div class="tip-card">
+      <div class="tip-title">✍️ नया Article चाहते हैं?</div>
+      <div class="tip-text">AI से कोई भी खेती सवाल पूछें — होम पर जाकर। हम हर हफ्ते नए Articles अपने Blog पर डालते हैं।</div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="nav-item active" id="nav-home" onclick="switchNav('home')">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-label">होम</span>
+  </div>
+  <div class="nav-item" id="nav-yojana" onclick="switchNav('yojana')">
+    <span class="nav-icon">📋</span>
+    <span class="nav-label">योजनाएं</span>
+  </div>
+  <div class="nav-item" id="nav-tips" onclick="switchNav('tips')">
+    <span class="nav-icon">💡</span>
+    <span class="nav-label">टिप्स</span>
+  </div>
+  <div class="nav-item" id="nav-blog" onclick="switchNav('blog')">
+    <span class="nav-icon">📰</span>
+    <span class="nav-label">Blog</span>
+  </div>
+</div>
+
+</div><!-- end wrapper -->
+
+<script>
+// ── NAV SWITCH ──
+function switchNav(tab) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + tab).classList.add('active');
+  document.getElementById('nav-' + tab).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ── CHAT ──
+const chatMessages = document.getElementById('chatMessages');
+const userInput    = document.getElementById('userInput');
+const sendBtn      = document.getElementById('sendBtn');
+const typingInd    = document.getElementById('typingIndicator');
+
+function getTime() {
+  const now = new Date();
+  return now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+}
+
+function addMsg(text, role) {
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  const time = getTime();
+  const tick = role === 'user' ? '<span style="color:rgba(255,255,255,0.7);font-size:11px;margin-left:6px;">✓✓</span>' : '';
+  div.innerHTML = `
+    <div class="msg-avatar">${role==='bot'?'🤖':'👨‍🌾'}</div>
+    <div style="display:flex;flex-direction:column;gap:3px;max-width:82%;">
+      <div class="msg-bubble">${text}</div>
+      <div style="font-size:10.5px;color:#9ab5a0;${role==='user'?'text-align:right':'text-align:left'};padding:0 4px;">
+        ${time}${tick}
+      </div>
+    </div>`;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+async function askAI(question) {
+  if (!question.trim()) return;
+
+  addMsg(question, 'user');
+  userInput.value = '';
+  userInput.style.height = 'auto';
+  sendBtn.disabled = true;
+  typingInd.classList.remove('hidden');
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  await new Promise(r => setTimeout(r, 900));
+  typingInd.classList.add('hidden');
+
+  const q = question.toLowerCase().trim();
+  let ans = '';
+
+  if (q.match(/यूरिया|urea/)) {
+    ans = `🧪 यूरिया खाद:\n\n📌 कब डालें:\n• धान: रोपाई के 15, 30, 45 दिन बाद\n• गेहूं: बुवाई के 21 और 42 दिन बाद\n• मात्रा: 50-60 किलो/एकड़ (3 बार में)\n\n⚠️ हमेशा शाम को डालें\n✅ डालने के बाद हल्की सिंचाई करें`;
+  } else if (q.match(/dap|डीएपी/)) {
+    ans = `🌱 DAP खाद:\n\n📌 मात्रा: 50 किलो/एकड़\n📌 कब: बुवाई के समय मिट्टी में मिलाएं\n📌 फायदा: जड़ें मजबूत, फल अच्छे\n\n✅ DAP + यूरिया = best combination`;
+  } else if (q.match(/खाद|fertilizer|उर्वरक/)) {
+    ans = `🌿 खाद की जानकारी:\n\n• यूरिया — हरियाली के लिए\n• DAP — जड़ और फल के लिए\n• पोटाश — रोग प्रतिरोधक\n• जिंक सल्फेट — पीलापन दूर करे\n\n🌱 जैविक: गोबर 4-5 ट्रॉली + वर्मीकम्पोस्ट 2 क्विंटल/एकड़`;
+  } else if (q.match(/पीला|पीलापन|yellow/)) {
+    ans = `🌾 फसल में पीलापन:\n\n❌ कारण:\n• नाइट्रोजन की कमी (सबसे आम)\n• जिंक की कमी\n• पानी कम या ज़्यादा\n\n✅ उपाय:\n• यूरिया 20 किलो/एकड़ तुरंत डालें\n• जिंक सल्फेट 5g/लीटर पानी में छिड़कें\n• खेत में 3-4 सेमी पानी रखें\n\n⏰ 7-10 दिन में हरा हो जाएगा!`;
+  } else if (q.match(/धान|paddy|rice|dhan/)) {
+    ans = `🌾 धान की खेती:\n\n📅 बुवाई: जून-जुलाई\n🌱 बीज: Swarna, MTU-7029, Rajendra Bhagwati\n💧 पानी: हमेशा 3-5 सेमी रखें\n\n🧪 खाद/एकड़:\n• DAP: 50 किलो\n• यूरिया: 50 किलो (3 बार)\n• जिंक: 10 किलो\n\n📊 उत्पादन: 20-28 क्विंटल/एकड़`;
+  } else if (q.match(/गेहूं|गेहु|wheat/)) {
+    ans = `🌿 गेहूं की खेती:\n\n📅 बुवाई: नवंबर 15 - दिसंबर 15\n🌱 बीज: HD-2967, DBW-187, DBW-303\n🌱 बीज दर: 40-45 किलो/एकड़\n\n🧪 खाद/एकड़:\n• DAP: 50 किलो\n• यूरिया: 65 किलो (3 बार)\n\n💧 सिंचाई: 5-6 बार\n📊 उत्पादन: 18-25 क्विंटल/एकड़`;
+  } else if (q.match(/सोयाबीन|soybean/)) {
+    ans = `🫘 सोयाबीन:\n\n📅 बुवाई: जून 20 - जुलाई 10\n🌱 बीज: JS-335, JS-9305\n🌱 बीज दर: 30-35 किलो/एकड़\n\n🧪 खाद: DAP 50 + पोटाश 25 किलो/एकड़\n🐛 कीट: नीम तेल 5ml/लीटर छिड़कें\n📊 उत्पादन: 12-18 क्विंटल/एकड़`;
+  } else if (q.match(/मक्का|maize|corn/)) {
+    ans = `🌽 मक्का:\n\n📅 बुवाई: जून-जुलाई\n🌱 बीज: Pioneer 3396, DKC-9144\n🌱 बीज दर: 8-10 किलो/एकड़\n\n🧪 खाद: DAP 50 + यूरिया 60 किलो\n📊 उत्पादन: 25-35 क्विंटल/एकड़`;
+  } else if (q.match(/सरसों|mustard/)) {
+    ans = `🌻 सरसों:\n\n📅 बुवाई: अक्टूबर 1-25\n🌱 बीज: Pusa Bold, RH-749\n🌱 बीज दर: 1.5-2 किलो/एकड़\n\n🧪 खाद: DAP 50 + यूरिया 40 + सल्फर 10 किलो\n💧 सिंचाई: 2-3 बार\n📊 उत्पादन: 8-12 क्विंटल/एकड़`;
+  } else if (q.match(/pm kisan|पीएम किसान|किसान सम्मान|किस्त/)) {
+    ans = `💰 PM Kisan Samman Nidhi:\n\n✅ ₹6,000 सालाना — 3 किस्तों में ₹2,000\n\n📋 Documents:\n• आधार कार्ड\n• बैंक पासबुक (आधार linked)\n• ज़मीन के कागज\n\n📱 Registration: pmkisan.gov.in\n📱 Status: pmkisan.gov.in → Beneficiary Status\n\n⚠️ किस्त नहीं आई? eKYC करें!`;
+  } else if (q.match(/बीमा|insurance|fasal bima/)) {
+    ans = `🛡️ PM Fasal Bima:\n\n💵 Premium: खरीफ 2%, रबी 1.5% (बाकी सरकार)\n\n📋 Documents: आधार, ज़मीन कागज, बैंक पासबुक\n📍 कहाँ: बैंक या CSC Center\n⏰ समय: बुवाई के 10 दिन के अंदर\n\n✅ बाढ़, सूखा, ओले — सब पर मुआवजा\n📞 Helpline: 14447`;
+  } else if (q.match(/kcc|किसान क्रेडिट/)) {
+    ans = `💳 किसान क्रेडिट कार्ड (KCC):\n\n💰 ₹50,000 से ₹3 लाख — सिर्फ 4% ब्याज\n\n📋 Documents: आधार, PAN, ज़मीन कागज, फोटो\n📍 SBI, PNB, BOB — किसी भी सरकारी बैंक\n⏰ 15-20 दिन में card\n\n✅ बीज, खाद खरीदें, फसल बेचकर चुकाएं`;
+  } else if (q.match(/कुसुम|kusum|सोलर|solar/)) {
+    ans = `☀️ PM Kusum Yojana:\n\n💰 सब्सिडी: 90% तक (किसान सिर्फ 10%)\n⚡ 3HP से 10HP सोलर पंप\n\n📍 Apply: pmkusum.mnre.gov.in\nया कृषि विभाग\n\n✅ बिजली बिल ज़ीरो, 25 साल warranty!`;
+  } else if (q.match(/मंडी|भाव|दाम|msp|price/)) {
+    ans = `📊 MSP 2025-26:\n\n• धान: ₹2,300/क्विंटल\n• गेहूं: ₹2,425/क्विंटल\n• सोयाबीन: ₹4,892/क्विंटल\n• मक्का: ₹2,225/क्विंटल\n• सरसों: ₹5,950/क्विंटल\n• चना: ₹5,650/क्विंटल\n\n📱 ताज़ा भाव: Agmarknet App या agmarknet.gov.in`;
+  } else if (q.match(/मौसम|weather|बारिश/)) {
+    ans = `🌤️ मौसम जानकारी:\n\n📱 Apps: Meghdoot, Kisan Suvidha, IMD Weather\n🌐 Website: mausam.imd.gov.in\n\n🌧️ बारिश से पहले:\n• कटी फसल ढकें\n• यूरिया न डालें\n\n☀️ गर्मी में: सुबह 6-9 या शाम 5-7 बजे सिंचाई`;
+  } else if (q.match(/जैविक|organic|वर्मी|compost/)) {
+    ans = `🌱 जैविक खेती:\n\n🪱 वर्मीकम्पोस्ट:\n1. छाया में गड्ढा बनाएं\n2. गोबर + पत्ते + केंचुए डालें\n3. 45-60 दिन में तैयार!\n\n🐄 जीवामृत: गोबर 10kg + गोमूत्र 5L + गुड़ 2kg + 200L पानी = 7 दिन रखें\n\n💰 लागत 50% कम, दाम 2x!`;
+  } else if (q.match(/सिंचाई|irrigation|ड्रिप|drip/)) {
+    ans = `💧 सिंचाई:\n\n🔹 ड्रिप: 70% पानी बचत, 40% ज़्यादा उत्पादन\n• लागत: ₹50,000-70,000/एकड़\n• सब्सिडी: 50-90%\n\n🔹 सही समय:\n• सुबह 6-9 या शाम 5-7 बजे\n• तेज़ धूप में कभी नहीं\n\n📍 PM Krishi Sinchai Yojana से सब्सिडी लें`;
+  } else if (q.match(/कीट|insect|pest|कीड़|दवाई|pesticide/)) {
+    ans = `🐛 कीट नियंत्रण:\n\n🌿 जैविक (best):\n• नीम तेल: 5ml + साबुन 1ml/लीटर\n• लहसुन-मिर्च काढ़ा\n• पीले sticky trap: 10-15/एकड़\n\n💊 रासायनिक:\n• Chlorpyrifos: 2ml/लीटर\n• Imidacloprid: 0.5ml/लीटर\n\n⚠️ सुबह या शाम छिड़कें, दस्ताने पहनें!`;
+  } else if (q.match(/मशरूम|mushroom/)) {
+    ans = `🍄 मशरूम खेती:\n\n🏠 10x10 फीट कमरा काफी\n💰 कमाई: ₹50,000-2,00,000/साल\n\n📋 Steps:\n1. भूसा उबालें (1 घंटे)\n2. ठंडा करें + Spawn मिलाएं\n3. पॉलीबैग में भरें\n4. 25°C + नमी रखें\n5. 25-30 दिन में फसल!\n\n✅ Spawn: KVK या कृषि विश्वविद्यालय से`;
+  } else if (q.match(/नाबार्ड|nabard/)) {
+    ans = `🏦 नाबार्ड लोन:\n\n💰 ₹50,000 से ₹25 लाख\n📊 ब्याज: 4-7% (सब्सिडी के बाद)\n\n📋 Documents: आधार, PAN, ज़मीन कागज, project report\n📍 नज़दीकी सरकारी बैंक में जाएं\n\n✅ खेती, पशुपालन, मछली पालन — सब के लिए`;
+  } else if (q.match(/मिट्टी|soil|भूमि जांच/)) {
+    ans = `🧪 मिट्टी जांच:\n\n📍 कहाँ कराएं: KVK — बिल्कुल FREE\n\n📋 Sample कैसे लें:\n• 8-10 जगहों से 6 इंच गहरी मिट्टी\n• सब मिलाकर 500g भेजें\n\n✅ Soil Health Card सरकार FREE देती है\n• कौन सी खाद चाहिए — सब बताता है`;
+  } else if (q.match(/पशु|गाय|cow|भैंस|buffalo|बकरी|goat|मुर्गी/)) {
+    ans = `🐄 पशुपालन:\n\n🐄 गाय: Holstein/Sahiwal — 15-25L दूध/दिन\n🐃 भैंस: Murrah — 10-18L दूध/दिन\n🐐 बकरी (20 बकरी): ₹50,000-1,00,000/साल\n\n🏦 NABARD से 90% सब्सिडी\n\n✅ पशु किसान क्रेडिट कार्ड भी मिलता है!`;
+  } else {
+    ans = `🌾 नमस्ते! मैं Kisan AI हूँ। 🙏\n\nआप मुझसे ये सवाल पूछ सकते हैं:\n\n🌱 फसल — धान, गेहूं, सोयाबीन, मक्का, सरसों\n🧪 खाद — यूरिया, DAP, जैविक खाद\n🐛 कीट और बीमारी का इलाज\n💰 PM Kisan, KCC, फसल बीमा, PM Kusum\n💧 सिंचाई और मौसम\n📊 मंडी भाव और MSP\n🐄 पशुपालन, मशरूम, बागबानी\n🏦 नाबार्ड लोन\n\n👉 जैसे: "धान में पीलापन क्यों आता है?"\nया: "PM Kisan के लिए क्या चाहिए?" 🙏`;
+  }
+
+  addMsg(ans, 'bot');
+  sendBtn.disabled = false;
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+
+function askQuick(q) {
+  switchNav('home');
+  setTimeout(() => {
+    userInput.value = q;
+    askAI(q);
+  }, 100);
+}
+
+// send button
+sendBtn.addEventListener('click', () => askAI(userInput.value));
+
+// enter to send
+userInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); askAI(userInput.value); }
+});
+
+// auto-resize textarea
+userInput.addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+});
+
+// ── DAILY TIP via AI ──
+async function loadDailyTip() {
+  const tips = [
+    '🌱 फसल बोने से पहले मिट्टी की जांच कराएं — इससे सही खाद का पता चलता है और उत्पादन 20-30% बढ़ता है।',
+    '💧 सुबह जल्दी या शाम को सिंचाई करें — इससे 40% पानी बचता है और फसल को नुकसान नहीं होता।',
+    '🌿 नीम का तेल एक प्राकृतिक कीटनाशक है — 5ml प्रति लीटर पानी में मिलाकर छिड़कें।',
+    '📱 PM Kisan पोर्टल पर अपना status जरूर चेक करें — अगली किस्त का इंतज़ार न करें।',
+    '🌾 फसल काटने के बाद खेत को खाली न छोड़ें — हरी खाद की फसल लगाएं जैसे ढेंचा या सनई।',
+    '🧪 यूरिया हमेशा शाम को डालें और तुरंत हल्की सिंचाई करें — इससे नाइट्रोजन का नुकसान कम होता है।'
+  ];
+  const today = new Date().getDay();
+  document.getElementById('dailyTip').textContent = tips[today % tips.length];
+}
+
+loadDailyTip();
+
+// ── LIKE ──
+let liked = false;
+function toggleLike() {
+  liked = !liked;
+  const btn   = document.getElementById('likeBtn');
+  const icon  = document.getElementById('likeIcon');
+  const text  = document.getElementById('likeText');
+  const count = document.getElementById('likeCount');
+  const cur   = parseInt(count.textContent);
+
+  if (liked) {
+    icon.textContent = '❤️';
+    text.textContent = 'Liked!';
+    btn.classList.add('liked');
+    count.textContent = cur + 1;
+  } else {
+    icon.textContent = '🤍';
+    text.textContent = 'Like';
+    btn.classList.remove('liked');
+    count.textContent = cur - 1;
+  }
+}
+
+// ── SHARE ──
+function shareWhatsApp() {
+  const msg = encodeURIComponent(
+    '🌾 *Kisan AI Hub* — हर किसान का डिजिटल साथी!\n\n' +
+    'AI से पाएं खेती की सलाह, सरकारी योजना जानकारी और मंडी भाव — बिल्कुल मुफ्त! 🤖\n\n' +
+    '👉 ' + window.location.href
+  );
+  window.open('https://wa.me/?text=' + msg, '_blank');
+}
+
+function copyLink() {
+  const url = window.location.href;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url);
+  } else {
+    const el = document.createElement('textarea');
+    el.value = url;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+  }
+  const toast = document.getElementById('copyToast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2200);
+}
+</script>
+</body>
+</html>
